@@ -20,6 +20,9 @@ const rotationAnimation = keyframes`
   border-radius: 50%;
 }
 `;
+const Emoji = styled.span`
+  font-size: 50px;
+`;
 const Box = styled.div`
   display: flex;
   justify-content: center;
@@ -28,8 +31,7 @@ const Box = styled.div`
   width: 200px;
   background-color: teal;
   animation: ${rotationAnimation} 1s linear infinite;
-  span {
-    font-size: 50px;
+  ${Emoji} {
     &:hover {
       font-size: 100px;
     }
@@ -43,8 +45,9 @@ function App() {
   return (
     <Father as="header">
       <Box>
-        <span>🏀</span>
+        <Emoji>🏀</Emoji>
       </Box>
+      <Emoji>👍</Emoji>
     </Father>
   );
 }
