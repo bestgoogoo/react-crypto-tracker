@@ -2,17 +2,26 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Container = styled.div`
+export const Loader = styled.span`
+  display: block;
+  text-align: center;
+`;
+export const Container = styled.div`
   padding: 0px 20px;
   max-width: 480px;
   margin: 0 auto;
 `;
-const Header = styled.header`
+export const Header = styled.header`
   height: 30vh;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
+export const Title = styled.h1`
+  font-size: 48px;
+  color: ${(props) => props.theme.accentColor};
+`;
+
 const CoinsList = styled.ul``;
 const Coin = styled.li`
   background-color: white;
@@ -29,21 +38,13 @@ const Coin = styled.li`
     color: ${(props) => props.theme.accentColor};
   }
 `;
-const Title = styled.h1`
-  font-size: 48px;
-  color: ${(props) => props.theme.accentColor};
-`;
-const Loader = styled.span`
-  display: block;
-  text-align: center;
-`;
 const CoinSymbol = styled.img`
   margin-right: 10px;
   width: 35px;
   height: 35px;
 `;
 
-interface ICoin {
+export interface ICoin {
   id: string;
   name: string;
   symbol: string;
@@ -77,7 +78,12 @@ function Coins() {
         <CoinsList>
           {coins.map((coin) => (
             <Coin key={coin.id}>
-              <Link to={`/${coin.id}`}>
+              <Link
+                to={{
+                  pathname: `/${coin.id}`,
+                  state: { name: coin.name },
+                }}
+              >
                 <CoinSymbol
                   src={`https://static.coinpaprika.com/coin/${coin.id}/logo.png`}
                 />

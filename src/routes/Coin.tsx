@@ -1,17 +1,16 @@
-import { useParams } from "react-router-dom";
-import styled from "styled-components";
-
-const Title = styled.h1`
-  color: ${(props) => props.theme.accentColor};
-`;
-
-interface RouteParams {
-  coinId: string;
-}
+import { Link, useLocation } from "react-router-dom";
+import { Container, Header, ICoin, Title } from "./Coins";
 
 function Coin() {
-  const { coinId } = useParams<RouteParams>();
-  return <Title>Coin: {coinId}</Title>;
+  const { state } = useLocation<ICoin>();
+  return (
+    <Container>
+      <Header>
+        <Title>{state?.name || "404: Not Found"}</Title>
+      </Header>
+      <Link to={"/"}>Go Home &rarr;</Link>
+    </Container>
+  );
 }
 
 export default Coin;
