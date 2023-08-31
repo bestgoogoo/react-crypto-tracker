@@ -22,81 +22,88 @@ const TickersViewItem = styled.div`
 interface PriceProps {
   coinId: string;
   tickersData?: ITicker;
+  tickersLoading?: boolean;
 }
 
-function Price({ coinId, tickersData }: PriceProps) {
+function Price({ coinId, tickersData, tickersLoading }: PriceProps) {
   const priceData = tickersData?.quotes.USD;
   return (
-    <TickersView>
-      <TickersViewItem>
-        <span>price</span>
-        <span>{priceData?.price}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>volume 24h</span>
-        <span>{priceData?.volume_24h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>volume 24h change 24h</span>
-        <span>{priceData?.volume_24h_change_24h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>market cap</span>
-        <span>{priceData?.market_cap}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>market cap change 24h</span>
-        <span>{priceData?.market_cap_change_24h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>ath price</span>
-        <span>{priceData?.ath_price}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>ath date</span>
-        <span>{priceData?.ath_date}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent from price ath</span>
-        <span>{priceData?.percent_from_price_ath}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 15m</span>
-        <span>{priceData?.percent_change_15m}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 30m</span>
-        <span>{priceData?.percent_change_30m}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 1h</span>
-        <span>{priceData?.percent_change_1h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 6h</span>
-        <span>{priceData?.percent_change_6h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 12h</span>
-        <span>{priceData?.percent_change_12h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 24h</span>
-        <span>{priceData?.percent_change_24h}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 7d</span>
-        <span>{priceData?.percent_change_7d}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 30d</span>
-        <span>{priceData?.percent_change_30d}</span>
-      </TickersViewItem>
-      <TickersViewItem>
-        <span>percent change 1y</span>
-        <span>{priceData?.percent_change_1y}</span>
-      </TickersViewItem>
-    </TickersView>
+    <div>
+      {tickersLoading ? (
+        "Loading Price..."
+      ) : (
+        <TickersView>
+          <TickersViewItem>
+            <span>price</span>
+            <span>{priceData?.price}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>volume 24h</span>
+            <span>{priceData?.volume_24h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>volume 24h change 24h</span>
+            <span>{priceData?.volume_24h_change_24h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>market cap</span>
+            <span>{priceData?.market_cap}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>market cap change 24h</span>
+            <span>{priceData?.market_cap_change_24h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>ath price</span>
+            <span>{priceData?.ath_price}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>ath date</span>
+            <span>{priceData?.ath_date}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent from price ath</span>
+            <span>{priceData?.percent_from_price_ath}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 15m</span>
+            <span>{priceData?.percent_change_15m}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 30m</span>
+            <span>{priceData?.percent_change_30m}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 1h</span>
+            <span>{priceData?.percent_change_1h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 6h</span>
+            <span>{priceData?.percent_change_6h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 12h</span>
+            <span>{priceData?.percent_change_12h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 24h</span>
+            <span>{priceData?.percent_change_24h}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 7d</span>
+            <span>{priceData?.percent_change_7d}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 30d</span>
+            <span>{priceData?.percent_change_30d}</span>
+          </TickersViewItem>
+          <TickersViewItem>
+            <span>percent change 1y</span>
+            <span>{priceData?.percent_change_1y}</span>
+          </TickersViewItem>
+        </TickersView>
+      )}
+    </div>
   );
 }
 

@@ -157,7 +157,7 @@ function Coin() {
     ["info", coinId],
     () => fetchCoinInfo(coinId)
   );
-  const { isLoading: trickersLoading, data: tickersData } = useQuery<ITicker>(
+  const { isLoading: tickersLoading, data: tickersData } = useQuery<ITicker>(
     ["trikers", coinId],
     () => fetchCoinTikers(coinId)
   );
@@ -219,7 +219,11 @@ function Coin() {
 
           <Switch>
             <Route path={`/${coinId}/price`}>
-              <Price coinId={coinId} tickersData={tickersData} />
+              <Price
+                coinId={coinId}
+                tickersData={tickersData}
+                tickersLoading={tickersLoading}
+              />
             </Route>
             <Route path={`/${coinId}/chart`}>
               <Chart coinId={coinId} />
