@@ -12,7 +12,7 @@ export const Container = styled.div`
   margin: 0 auto;
 `;
 export const Header = styled.header`
-  height: 30vh;
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
