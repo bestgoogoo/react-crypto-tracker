@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import {
   Link,
   Route,
@@ -9,6 +9,7 @@ import {
   useRouteMatch,
 } from "react-router-dom";
 import { Container, Header, ICoin, Loader, Title } from "./Coins";
+import { fetchCoinInfo, fetchCoinTikers } from "../api";
 import Price from "./Price";
 import Chart from "./Chart";
 
@@ -137,7 +138,7 @@ interface IQuote {
   [key: string]: IQuoteValue;
 }
 
-interface IPriceData {
+interface ITicker {
   id: string;
   name: string;
   symbol: string;
@@ -154,63 +155,58 @@ interface IPriceData {
 function Coin() {
   const { coinId } = useParams<RouteParams>();
   const { state } = useLocation<ICoin>();
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<IInfoData>();
-  const [price, setPrice] = useState<IPriceData>();
+  const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
+    ["info", coinId],
+    () => fetchCoinInfo(coinId)
+  );
+  const { isLoading: trickersLoading, data: tickersData } = useQuery<ITicker>(
+    ["trikers", coinId],
+    () => fetchCoinTikers(coinId)
+  );
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  console.log(priceMatch);
-  console.log(chartMatch);
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      setInfo(infoData);
-      setPrice(priceData);
-      setLoading(false);
-    })();
-  }, [coinId]);
+
   return (
     <Container>
       <Header>
         <Title>
-          {state?.name ? state.name : loading ? "404: Not Found" : info?.name}
+          {state?.name
+            ? state.name
+            : infoLoading
+            ? "404: Not Found"
+            : infoData?.name}
         </Title>
       </Header>
       <Link to={"/"} style={{ display: "block", marginBottom: "10px" }}>
         Go Home &rarr;
       </Link>
-      {loading ? (
+      {infoLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Overview>
             <OverviewItem>
               <span>Rank:</span>
-              <span>{info?.rank}</span>
+              <span>{infoData?.rank}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Symbol:</span>
-              <span>$ {info?.symbol}</span>
+              <span>$ {infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Open Source:</span>
-              <span>{info?.open_source ? "Yes" : "No"}</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span>
             </OverviewItem>
           </Overview>
-          <Description>{info?.description}</Description>
+          <Description>{infoData?.description}</Description>
           <Overview>
             <OverviewItem>
               <span>Total Supply:</span>
-              <span>{price?.total_supply.toLocaleString()}</span>
+              <span>{tickersData?.total_supply.toLocaleString()}</span>
             </OverviewItem>
             <OverviewItem>
               <span>Max Supply:</span>
-              <span>{price?.max_supply.toLocaleString()}</span>
+              <span>{tickersData?.max_supply.toLocaleString()}</span>
             </OverviewItem>
           </Overview>
 
