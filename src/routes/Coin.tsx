@@ -151,11 +151,7 @@ export interface ITicker {
   quotes: IQuote;
 }
 
-interface ICoinProps {
-  isDark: boolean;
-}
-
-function Coin({ isDark }: ICoinProps) {
+function Coin() {
   const { coinId } = useParams<IRouteParams>();
   const { state } = useLocation<ICoin>();
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
@@ -240,7 +236,7 @@ function Coin({ isDark }: ICoinProps) {
               />
             </Route>
             <Route path={`/${coinId}/chart`}>
-              <Chart isDark={isDark} coinId={coinId} />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
