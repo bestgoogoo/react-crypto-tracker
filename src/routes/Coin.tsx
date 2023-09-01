@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { Helmet } from "react-helmet";
 import {
   Link,
   Route,
@@ -166,6 +167,15 @@ function Coin() {
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name
+            ? state.name
+            : infoLoading
+            ? "404: Not Found"
+            : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
         <Title>
           {state?.name

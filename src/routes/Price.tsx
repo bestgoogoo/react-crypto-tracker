@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import { ITicker } from "./Coin";
+import { Loader } from "./Coins";
 
 const TickersView = styled.div`
   display: block;
@@ -30,7 +31,7 @@ function Price({ coinId, tickersData, tickersLoading }: PriceProps) {
   return (
     <div>
       {tickersLoading ? (
-        "Loading Price..."
+        <Loader>Loading chart...</Loader>
       ) : (
         <TickersView>
           <TickersViewItem>

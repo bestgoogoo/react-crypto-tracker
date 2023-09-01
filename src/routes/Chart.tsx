@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import ApexChart from "react-apexcharts";
 import { fetchCoinHistory } from "../api";
+import { Loader } from "./Coins";
 
 interface IData {
   time_open: number;
@@ -24,7 +25,7 @@ function Chart({ coinId }: ChartProps) {
   return (
     <h1>
       {isLoading ? (
-        "Loading chart..."
+        <Loader>Loading chart...</Loader>
       ) : (
         <ApexChart
           type="line"
