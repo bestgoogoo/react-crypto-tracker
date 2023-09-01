@@ -9,10 +9,12 @@ import {
   useParams,
   useRouteMatch,
 } from "react-router-dom";
-import { Container, Header, ICoin, Loader, Title } from "./Coins";
+import { Button, Container, Header, ICoin, Loader, Title } from "./Coins";
 import { fetchCoinInfo, fetchCoinTikers } from "../api";
 import Price from "./Price";
 import Chart from "./Chart";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "../atoms";
 
 const Overview = styled.div`
   display: flex;
@@ -164,7 +166,9 @@ function Coin() {
   );
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-
+  const isDark = useRecoilValue(isDarkAtom);
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
   return (
     <Container>
       <Helmet>
@@ -177,6 +181,9 @@ function Coin() {
         </title>
       </Helmet>
       <Header>
+        <Link to={"/"} style={{ display: "block", marginBottom: "10px" }}>
+          <Button style={{ position: "absolute", left: -400 }}>🏠</Button>
+        </Link>
         <Title>
           {state?.name
             ? state.name
@@ -184,10 +191,9 @@ function Coin() {
             ? "404: Not Found"
             : infoData?.name}
         </Title>
+        <Button onClick={toggleDarkAtom}>{isDark ? "🌇" : "🌃"}</Button>
       </Header>
-      <Link to={"/"} style={{ display: "block", marginBottom: "10px" }}>
-        Go Home &rarr;
-      </Link>
+
       {infoLoading ? (
         <Loader>Loading...</Loader>
       ) : (

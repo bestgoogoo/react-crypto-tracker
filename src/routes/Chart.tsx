@@ -25,33 +25,29 @@ function Chart({ coinId }: IChartProps) {
   const { isLoading, data } = useQuery<IData[]>(["ohlcv", coinId], () =>
     fetchCoinHistory(coinId)
   );
+  const ohlcData = data?.map((ohlc) => ({
+    x: new Date(Date.now() - ohlc?.time_close).toString().slice(4, 25),
+    y: [ohlc.open, ohlc.high, ohlc.low, ohlc.close],
+  }));
+
   return (
-    <h1>
+    <>
       {isLoading ? (
         <Loader>Loading chart...</Loader>
       ) : (
         <ApexChart
-          type="line"
-          series={[
-            {
-              name: "Price",
-              data: data?.map((price) => Number(price.close)) as number[],
-            },
-          ]}
+          type="candlestick"
+          series={[{ data: ohlcData }] as unknown as number[]}
           options={{
             theme: {
               mode: isDark ? "dark" : "light",
             },
             chart: {
+              type: "candlestick",
               height: 300,
               width: 500,
               toolbar: { show: false },
               background: "transparent",
-            },
-            grid: { show: false },
-            stroke: {
-              width: 3,
-              curve: "straight",
             },
             xaxis: {
               labels: { show: false },
@@ -62,18 +58,17 @@ function Chart({ coinId }: IChartProps) {
               ),
             },
             yaxis: { show: false },
-            fill: {
-              type: "gradient",
-              gradient: { gradientToColors: ["#0fbcf9"], stops: [0, 100] },
-            },
-            colors: ["#0be881"],
             tooltip: {
-              y: { formatter: (value) => `$${value.toLocaleString()}` },
+              y: { formatter: (value: number) => `$${value.toLocaleString()}` },
+            },
+            grid: { show: false },
+            stroke: {
+              width: 2,
             },
           }}
         />
       )}
-    </h1>
+    </>
   );
 }
 
