@@ -56,7 +56,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-interface RouteParams {
+interface IRouteParams {
   coinId: string;
 }
 
@@ -151,8 +151,12 @@ export interface ITicker {
   quotes: IQuote;
 }
 
-function Coin() {
-  const { coinId } = useParams<RouteParams>();
+interface ICoinProps {
+  isDark: boolean;
+}
+
+function Coin({ isDark }: ICoinProps) {
+  const { coinId } = useParams<IRouteParams>();
   const { state } = useLocation<ICoin>();
   const { isLoading: infoLoading, data: infoData } = useQuery<IInfoData>(
     ["info", coinId],
@@ -236,7 +240,7 @@ function Coin() {
               />
             </Route>
             <Route path={`/${coinId}/chart`}>
-              <Chart coinId={coinId} />
+              <Chart isDark={isDark} coinId={coinId} />
             </Route>
           </Switch>
         </>

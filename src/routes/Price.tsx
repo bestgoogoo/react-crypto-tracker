@@ -20,13 +20,13 @@ const TickersViewItem = styled.div`
   }
 `;
 
-interface PriceProps {
+interface IPriceProps {
   coinId: string;
   tickersData?: ITicker;
   tickersLoading?: boolean;
 }
 
-function Price({ coinId, tickersData, tickersLoading }: PriceProps) {
+function Price({ coinId, tickersData, tickersLoading }: IPriceProps) {
   const priceData = tickersData?.quotes.USD;
   return (
     <div>
