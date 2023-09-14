@@ -6,7 +6,6 @@ import Category from "./Category";
 
 function ToDoList() {
   const toDos = useRecoilValue(toDoSelector);
-  console.log(toDos);
   return (
     <div>
       <h1>To Do List</h1>
