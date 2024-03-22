@@ -1,5 +1,9 @@
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+
+import { toDoState } from "../atoms";
+import DraggableCard from "./DraggableCard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,17 +26,18 @@ const Board = styled.div`
   border-radius: 5px;
   min-height: 200px;
 `;
-const Card = styled.div`
-  background-color: ${(props) => props.theme.cardColor};
-  margin-bottom: 5px;
-  padding: 10px 10px;
-  border-radius: 5px;
-`;
-
-const toDos = ["a", "b", "c", "d", "e", "f"];
 
 function Trello() {
-  const onDragEnd = () => {};
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    if (!destination) return;
+    setToDos((oldToDos) => {
+      const toDos = [...oldToDos];
+      toDos.splice(source.index, 1);
+      toDos.splice(destination?.index, 0, draggableId);
+      return toDos;
+    });
+  };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
@@ -40,19 +45,8 @@ function Trello() {
           <Droppable droppableId="one">
             {(provided) => (
               <Board ref={provided.innerRef} {...provided.droppableProps}>
-                {toDos.map((toDo) => (
-                  <Draggable draggableId={toDo} index={0}>
-                    {(provided) => (
-                      <Card
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <span>👋</span>
-                        {toDo}
-                      </Card>
-                    )}
-                  </Draggable>
+                {toDos.map((toDo, index) => (
+                  <DraggableCard key={toDo} toDo={toDo} index={index} />
                 ))}
                 {provided.placeholder}
               </Board>
