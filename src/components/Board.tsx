@@ -4,6 +4,8 @@ import styled from "styled-components";
 import DraggableCard from "./DraggableCard";
 
 const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 300px;
   padding: 20px 10px;
   padding-top: 10px;
@@ -17,6 +19,10 @@ const Title = styled.h2`
   margin-bottom: 10px;
   font-size: 18px;
 `;
+const Area = styled.div`
+  background-color: blue;
+  flex-grow: 1;
+`;
 
 interface IBoardProps {
   toDos: [];
@@ -29,12 +35,12 @@ function Board({ toDos, boardId }: IBoardProps) {
       <Title>{boardId}</Title>
       <Droppable droppableId={boardId}>
         {(provided) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <Area ref={provided.innerRef} {...provided.droppableProps}>
             {toDos.map((toDo, index) => (
               <DraggableCard key={toDo} toDo={toDo} index={index} />
             ))}
             {provided.placeholder}
-          </div>
+          </Area>
         )}
       </Droppable>
     </Wrapper>
