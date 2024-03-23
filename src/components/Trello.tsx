@@ -24,13 +24,32 @@ const Boards = styled.div`
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
   const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
+    console.log(destination, source);
     if (!destination) return;
-    // setToDos((oldToDos) => {
-    //   const toDos = [...oldToDos];
-    //   toDos.splice(source.index, 1);
-    //   toDos.splice(destination?.index, 0, draggableId);
-    //   return toDos;
-    // });
+    if (source.droppableId === destination.droppableId) {
+      setToDos((allBoards) => {
+        const moveInBoard = [...allBoards[source.droppableId]];
+        moveInBoard.splice(source.index, 1);
+        moveInBoard.splice(destination?.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId]: moveInBoard,
+        };
+      });
+    }
+    if (source.droppableId !== destination.droppableId) {
+      setToDos((allBoards) => {
+        const moveFromBoard = [...allBoards[source.droppableId]];
+        const moveToBoard = [...allBoards[destination.droppableId]];
+        moveFromBoard.splice(source.index, 1);
+        moveToBoard.splice(destination.index, 0, draggableId);
+        return {
+          ...allBoards,
+          [source.droppableId]: moveFromBoard,
+          [destination.droppableId]: moveToBoard,
+        };
+      });
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
