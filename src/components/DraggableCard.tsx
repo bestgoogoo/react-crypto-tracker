@@ -9,13 +9,12 @@ const Card = styled.div`
   border-radius: 5px;
 `;
 
-interface IDraggableCard {
+interface ICardProps {
   toDo: string;
   index: number;
 }
 
-function DraggableCard({ toDo, index }: IDraggableCard) {
-  console.log(`${toDo} rendered`);
+function DraggableCard({ toDo, index }: ICardProps) {
   return (
     <Draggable draggableId={toDo} index={index}>
       {(provided) => (
