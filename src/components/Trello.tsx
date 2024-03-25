@@ -23,14 +23,14 @@ const Boards = styled.div`
 
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const onDragEnd = ({ draggableId, destination, source }: DropResult) => {
-    console.log(destination, source);
+  const onDragEnd = ({ destination, source }: DropResult) => {
     if (!destination) return;
     if (source.droppableId === destination.droppableId) {
       setToDos((allBoards) => {
         const moveInBoard = [...allBoards[source.droppableId]];
+        const taskObj = moveInBoard[source.index];
         moveInBoard.splice(source.index, 1);
-        moveInBoard.splice(destination?.index, 0, draggableId);
+        moveInBoard.splice(destination?.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: moveInBoard,
@@ -41,8 +41,9 @@ function Trello() {
       setToDos((allBoards) => {
         const moveFromBoard = [...allBoards[source.droppableId]];
         const moveToBoard = [...allBoards[destination.droppableId]];
+        const taskObj = moveFromBoard[source.index];
         moveFromBoard.splice(source.index, 1);
-        moveToBoard.splice(destination.index, 0, draggableId);
+        moveToBoard.splice(destination.index, 0, taskObj);
         return {
           ...allBoards,
           [source.droppableId]: moveFromBoard,
