@@ -31,7 +31,7 @@ interface ICardProps {
 
 function DraggableCard({ toDoId, toDoText, index }: ICardProps) {
   const [check, setCheck] = useState(false);
-  const onClick = ({ target }: React.MouseEvent<HTMLButtonElement>) => {
+  const onClick = () => {
     setCheck((current) => !current);
   };
   return (
