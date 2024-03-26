@@ -23,11 +23,11 @@ const Title = styled.h2`
   font-size: 18px;
 `;
 
-interface IAreaProps {
+export interface IAreaProps {
   isDraggingOver: boolean;
   draggingFromThisWith: boolean;
 }
-const Area = styled.div<IAreaProps>`
+export const Area = styled.div<IAreaProps>`
   background-color: ${(props) =>
     props.isDraggingOver
       ? theme.accentColor
