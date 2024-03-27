@@ -26,6 +26,7 @@ function CardForm({ boardId }: ICardFormProps) {
     const newToDo = {
       id: Date.now(),
       text: toDo,
+      checking: false,
     };
     // setToDos((allBoards) => {
     //   const selectedBoard = [...allBoards[boardId]];

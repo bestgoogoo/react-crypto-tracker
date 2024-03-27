@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
+import React from "react";
 import styled from "styled-components";
+import { useRecoilState } from "recoil";
+import { Draggable } from "react-beautiful-dnd";
 import { ImCheckboxChecked, ImCheckboxUnchecked } from "react-icons/im";
 
-const Card = styled.div<{ isDragging: boolean; check: boolean }>`
+import { toDoState } from "../atoms";
+
+const Card = styled.div<{ isDragging: boolean; checkBox: boolean }>`
   display: flex;
   align-items: center;
   background-color: ${(props) => props.theme.cardColor};
@@ -15,7 +18,8 @@ const Card = styled.div<{ isDragging: boolean; check: boolean }>`
     props.isDragging ? "#e4f2ff" : props.theme.cardColor};
   box-shadow: ${(props) =>
     props.isDragging ? "5px 5px 5px rgba(0, 0, 0, 0.1)" : "none"};
-  text-decoration-line: ${(props) => (props.check ? "line-through" : "none")};
+  text-decoration-line: ${(props) =>
+    props.checkBox ? "line-through" : "none"};
 `;
 const CheckBox = styled.button`
   border: none;
@@ -24,30 +28,44 @@ const CheckBox = styled.button`
 `;
 
 interface ICardProps {
-  toDoId: number;
-  toDoText: string;
+  boardId: string;
   index: number;
 }
 
-function DraggableCard({ toDoId, toDoText, index }: ICardProps) {
-  const [check, setCheck] = useState(false);
+function DraggableCard({ boardId, index }: ICardProps) {
+  const [toDos, setToDos] = useRecoilState(toDoState);
   const onClick = () => {
-    setCheck((current) => !current);
+    setToDos((oldToDos) => {
+      const copyBoard = [...oldToDos[boardId]];
+      if (copyBoard[index].checking === false) {
+        copyBoard.splice(index, 1, { ...copyBoard[index], checking: true });
+      } else {
+        copyBoard.splice(index, 1, { ...copyBoard[index], checking: false });
+      }
+      return {
+        ...oldToDos,
+        [boardId]: copyBoard,
+      };
+    });
   };
   return (
-    <Draggable draggableId={toDoId + ""} index={index}>
+    <Draggable draggableId={toDos[boardId][index].id + ""} index={index}>
       {(provided, snapshot) => (
         <Card
           isDragging={snapshot.isDragging}
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
-          check={check}
+          checkBox={toDos[boardId][index].checking}
         >
           <CheckBox onClick={onClick}>
-            {check ? <ImCheckboxChecked /> : <ImCheckboxUnchecked />}
+            {toDos[boardId][index].checking ? (
+              <ImCheckboxChecked />
+            ) : (
+              <ImCheckboxUnchecked />
+            )}
           </CheckBox>
-          {toDoText}
+          {toDos[boardId][index].text}
         </Card>
       )}
     </Draggable>

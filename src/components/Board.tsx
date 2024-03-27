@@ -4,8 +4,9 @@ import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 
 import DraggableCard from "./DraggableCard";
 import { theme } from "../theme";
-import { IToDo } from "../atoms";
+import { toDoState } from "../atoms";
 import CardForm from "./CardForm";
+import { useRecoilValue } from "recoil";
 
 const Wrapper = styled.div`
   display: flex;
@@ -52,11 +53,11 @@ const MoveIcon = styled.div`
 `;
 
 interface IBoardProps {
-  toDos: IToDo[];
   boardId: string;
 }
 
-function Board({ toDos, boardId }: IBoardProps) {
+function Board({ boardId }: IBoardProps) {
+  const toDos = useRecoilValue(toDoState);
   return (
     <Wrapper>
       <Title>{boardId}</Title>
@@ -76,11 +77,10 @@ function Board({ toDos, boardId }: IBoardProps) {
                 <FaMinusCircle />
               ) : null}
             </MoveIcon>
-            {toDos.map((toDo, index) => (
+            {toDos[boardId].map((_, index) => (
               <DraggableCard
-                key={toDo.id}
-                toDoId={toDo.id}
-                toDoText={toDo.text}
+                key={toDos[boardId][index]?.id}
+                boardId={boardId}
                 index={index}
               />
             ))}

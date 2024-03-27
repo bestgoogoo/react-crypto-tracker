@@ -25,43 +25,41 @@ const Boards = styled.div`
 
 function Trello() {
   const [toDos, setToDos] = useRecoilState(toDoState);
-  const allToDos = Object.keys(toDos).filter((element) => element !== "trash");
+  const allBoards = Object.keys(toDos).filter((key) => key !== "trash");
   const onDragEnd = ({ destination, source }: DropResult) => {
-    console.log(source, destination);
     if (!destination) return;
     if (source.droppableId === destination.droppableId) {
-      setToDos((allBoards) => {
-        const moveInBoard = [...allBoards[source.droppableId]];
+      setToDos((oldToDos) => {
+        const moveInBoard = [...oldToDos[source.droppableId]];
         const taskObj = moveInBoard[source.index];
         moveInBoard.splice(source.index, 1);
         moveInBoard.splice(destination.index, 0, taskObj);
         return {
-          ...allBoards,
+          ...oldToDos,
           [source.droppableId]: moveInBoard,
         };
       });
     }
     if (source.droppableId !== destination.droppableId) {
-      setToDos((allBoards) => {
-        const moveFromBoard = [...allBoards[source.droppableId]];
-        const moveToBoard = [...allBoards[destination.droppableId]];
+      setToDos((oldToDos) => {
+        const moveFromBoard = [...oldToDos[source.droppableId]];
+        const moveToBoard = [...oldToDos[destination.droppableId]];
         const taskObj = moveFromBoard[source.index];
         moveFromBoard.splice(source.index, 1);
         moveToBoard.splice(destination.index, 0, taskObj);
         return {
-          ...allBoards,
+          ...oldToDos,
           [source.droppableId]: moveFromBoard,
           [destination.droppableId]: moveToBoard,
         };
       });
     }
     if (destination.droppableId === "trash") {
-      setToDos((allBoards) => {
-        const removeBoard = [...allBoards[source.droppableId]];
+      setToDos((oldToDos) => {
+        const removeBoard = [...oldToDos[source.droppableId]];
         removeBoard.splice(source.index, 1);
-        console.log("hello");
         return {
-          ...allBoards,
+          ...oldToDos,
           [source.droppableId]: removeBoard,
         };
       });
@@ -71,12 +69,8 @@ function Trello() {
     <DragDropContext onDragEnd={onDragEnd}>
       <Wrapper>
         <Boards>
-          {allToDos.map((boardId) => (
-            <Board
-              toDos={toDos[boardId] as []}
-              boardId={boardId}
-              key={boardId}
-            />
+          {allBoards.map((boardId) => (
+            <Board boardId={boardId} key={boardId} />
           ))}
         </Boards>
         <Trash />
