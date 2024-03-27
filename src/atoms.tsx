@@ -6,17 +6,17 @@ export interface IToDo {
   checking: boolean;
 }
 
-interface IToDoState {
+export interface IToDoState {
   [key: string]: IToDo[];
 }
 
 export const toDoState = atom<IToDoState>({
   key: "toDo",
   default: {
-    trash: [],
     "To Do": [],
     Doing: [],
     Done: [],
+    trash: [],
   },
   effects: [
     ({ setSelf, onSet }) => {

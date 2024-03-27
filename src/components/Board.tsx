@@ -8,7 +8,7 @@ import { toDoState } from "../atoms";
 import CardForm from "./CardForm";
 import { useRecoilValue } from "recoil";
 
-const Wrapper = styled.div`
+export const BoardWrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 300px;
@@ -59,7 +59,7 @@ interface IBoardProps {
 function Board({ boardId }: IBoardProps) {
   const toDos = useRecoilValue(toDoState);
   return (
-    <Wrapper>
+    <BoardWrapper>
       <Title>{boardId}</Title>
       <CardForm boardId={boardId} />
       <Droppable droppableId={boardId}>
@@ -88,7 +88,7 @@ function Board({ boardId }: IBoardProps) {
           </Area>
         )}
       </Droppable>
-    </Wrapper>
+    </BoardWrapper>
   );
 }
 

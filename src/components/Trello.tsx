@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { toDoState } from "../atoms";
 import Board from "./Board";
 import Trash from "./Trash";
+import CreateBoard from "./CreateBoard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,8 +18,8 @@ const Wrapper = styled.div`
 `;
 const Boards = styled.div`
   display: grid;
-  width: 100%;
   grid-template-columns: repeat(3, 1fr);
+  width: 100%;
   gap: 10px;
   position: relative;
 `;
@@ -72,6 +73,7 @@ function Trello() {
           {allBoards.map((boardId) => (
             <Board boardId={boardId} key={boardId} />
           ))}
+          <CreateBoard />
         </Boards>
         <Trash />
       </Wrapper>
