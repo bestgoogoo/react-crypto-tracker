@@ -1,12 +1,13 @@
-import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { Droppable } from "react-beautiful-dnd";
+import { useRecoilState } from "recoil";
 import { FaMinusCircle, FaPlusCircle } from "react-icons/fa";
 
-import DraggableCard from "./DraggableCard";
 import { theme } from "../theme";
 import { toDoState } from "../atoms";
+import DraggableCard from "./DraggableCard";
 import CardForm from "./CardForm";
-import { useRecoilValue } from "recoil";
+import React from "react";
 
 export const BoardWrapper = styled.div`
   display: flex;
@@ -16,12 +17,18 @@ export const BoardWrapper = styled.div`
   background-color: ${(props) => props.theme.boardColor};
   border-radius: 5px;
   min-height: 200px;
+  position: relative;
 `;
 const Title = styled.h2`
   text-align: center;
   font-weight: 600;
   margin-bottom: 10px;
   font-size: 18px;
+`;
+const CloseIcon = styled.button`
+  border: none;
+  position: absolute;
+  left: 0%;
 `;
 
 interface IAreaProps {
@@ -57,10 +64,24 @@ interface IBoardProps {
 }
 
 function Board({ boardId }: IBoardProps) {
-  const toDos = useRecoilValue(toDoState);
+  const [toDos, setToDos] = useRecoilState(toDoState);
+  const onClickClose = ({
+    currentTarget,
+  }: React.MouseEvent<HTMLButtonElement>) => {
+    setToDos((allBoards) => {
+      const findBoard = Object.keys(allBoards).indexOf(boardId);
+      const arrBoards = Object.entries(allBoards);
+      arrBoards.splice(findBoard, 1);
+      const newBoards = Object.fromEntries(arrBoards);
+      return newBoards;
+    });
+  };
   return (
     <BoardWrapper>
       <Title>{boardId}</Title>
+      <CloseIcon name={boardId} onClick={onClickClose}>
+        🔴
+      </CloseIcon>
       <CardForm boardId={boardId} />
       <Droppable droppableId={boardId}>
         {(provided, snapshot) => (

@@ -30,7 +30,6 @@ function CreateBoard() {
         if (boards.find((board) => board === popUp)) {
           alert(`${popUp} is already Exist.`);
         }
-        console.log(boards);
         return { ...allBoards, [popUp]: [] };
       });
     }
